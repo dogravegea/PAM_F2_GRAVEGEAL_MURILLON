@@ -39,9 +39,9 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
         val MealListItem = meals.value?.get(position)
 
         // sets the image to the imageview from our itemHolder class
-        m_view?.let { Glide.with(it.context).load(MealListItem?.image_url).into(holder.mealThumbnail) };
-        holder.mealName.text = MealListItem?.name
-        holder.mealCategory.text = MealListItem?.category
+        m_view?.let { Glide.with(it.context).load(MealListItem?.strMealThumb).into(holder.mealThumbnail) }
+        holder.mealName.text = MealListItem?.strMeal
+        holder.mealCategory.text = MealListItem?.strCategory
     }
 
 
