@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import java.lang.Integer.min
 
 
 class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>, var viewLifecycleOwner : LifecycleOwner) : RecyclerView.Adapter<RecyclerViewMealListAdapter.ViewHolder>() {
@@ -40,8 +41,8 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
 
         // sets the image to the imageview from our itemHolder class
         m_view?.let { Glide.with(it.context).load(MealListItem?.strMealThumb).into(holder.mealThumbnail) }
-        holder.mealName.text = MealListItem?.strMeal
-        holder.mealCategory.text = MealListItem?.strCategory
+        holder.mealName.text = MealListItem?.strMeal?.subSequence(0, Math.min(MealListItem?.strMeal.length - 1, 30))
+        holder.mealCategory.text = MealListItem?.strCategory?.subSequence(0, Math.min(MealListItem?.strCategory.length - 1, 20))
     }
 
 

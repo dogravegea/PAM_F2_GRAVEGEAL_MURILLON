@@ -40,7 +40,6 @@ class MealsListFragment : Fragment() {
         recyclerview?.layoutManager = LinearLayoutManager(view?.context)
 
 
-
         return m_view;
     }
 }
