@@ -5,13 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 
 class MealListViewModel : ViewModel() {
 
-    private var api = MealAPIEndpoint()
+    private var api = MealAPI()
     private val mealsList: MutableLiveData<ArrayList<MealListItem>> = MutableLiveData<ArrayList<MealListItem>>().apply {
             if(value == null) {
                 value = ArrayList<MealListItem>()
@@ -28,14 +27,14 @@ class MealListViewModel : ViewModel() {
         // Do an asynchronous operation to fetch meals.
 
         for(i in 1..10) {
-            val job = viewModelScope.launch() {
+            viewModelScope.launch() {
                 var lst : ArrayList<MealListItem> =  ArrayList<MealListItem>()
 
                 if(value != null) {
                     lst = value
                 }
 
-                for(i in 1..10) {
+                for(j in 1..10) {
                     try {
                         lst.add(api.getRandomRecipe())
                     } catch (e: Throwable) {

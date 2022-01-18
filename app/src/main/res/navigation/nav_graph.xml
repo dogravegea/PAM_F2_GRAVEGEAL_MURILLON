@@ -9,5 +9,14 @@
         android:id="@+id/mealsListFragment"
         android:name="com.dricolas.perfectmeal.MealsListFragment"
         android:label="fragment_meals_list"
-        tools:layout="@layout/fragment_meals_list" />
+        tools:layout="@layout/fragment_meals_list" >
+        <action
+            android:id="@+id/action_mealsListFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.dricolas.perfectmeal.MealDetailsFragment"
+        android:label="MealDetailsFragment" />
 </navigation>

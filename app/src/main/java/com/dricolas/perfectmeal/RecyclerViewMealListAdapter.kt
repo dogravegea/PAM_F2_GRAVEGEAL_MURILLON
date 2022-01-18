@@ -14,15 +14,9 @@ import com.bumptech.glide.Glide
 import java.lang.Integer.min
 
 
-class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>, var viewLifecycleOwner : LifecycleOwner) : RecyclerView.Adapter<RecyclerViewMealListAdapter.ViewHolder>() {
+class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>, var mealClickListener : OnMealClickListener) : RecyclerView.Adapter<RecyclerViewMealListAdapter.ViewHolder>() {
 
     private var m_view : View? = null
-
-    init {
-        meals.observe(viewLifecycleOwner, Observer<ArrayList<MealListItem>>{ meals ->
-            notifyDataSetChanged()
-        })
-    }
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,13 +30,16 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val MealListItem = meals.value?.get(position)
 
         // sets the image to the imageview from our itemHolder class
         m_view?.let { Glide.with(it.context).load(MealListItem?.strMealThumb).into(holder.mealThumbnail) }
-        holder.mealName.text = MealListItem?.strMeal?.subSequence(0, Math.min(MealListItem?.strMeal.length - 1, 30))
-        holder.mealCategory.text = MealListItem?.strCategory?.subSequence(0, Math.min(MealListItem?.strCategory.length - 1, 20))
+        holder.mealName.text = MealListItem?.strMeal?.subSequence(0, Math.min(MealListItem.strMeal.length, 30))
+        holder.mealCategory.text = MealListItem?.strCategory?.subSequence(0, Math.min(MealListItem.strCategory.length, 20))
+
+        holder.mealDetailButton.setOnClickListener {
+            mealClickListener.OnMealClick(MealListItem!!)
+        }
     }
 
 
