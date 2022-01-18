@@ -1,5 +1,7 @@
-package com.dricolas.perfectmeal
+package com.dricolas.perfectmeal.rest
 
+import com.dricolas.perfectmeal.rest.MealList
+import com.dricolas.perfectmeal.rest.MealListItem
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.json.*

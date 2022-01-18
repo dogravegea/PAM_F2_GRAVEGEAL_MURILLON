@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.dricolas.perfectmeal.rest.MealListItem
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
