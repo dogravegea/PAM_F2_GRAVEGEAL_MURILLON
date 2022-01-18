@@ -5,4 +5,5 @@
     <string name="details">Détails</string>
     <string name="meal_name">MealName</string>
     <string name="meal_category">MealCatgory</string>
+    <string name="meal_detail_recipe">Receipt</string>
 </resources>

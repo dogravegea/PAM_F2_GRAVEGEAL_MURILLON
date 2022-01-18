@@ -13,7 +13,7 @@
         <action
             android:id="@+id/action_mealsListFragment_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment"
-            />
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"

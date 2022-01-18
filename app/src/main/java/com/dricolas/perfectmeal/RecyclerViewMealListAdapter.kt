@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,10 +28,10 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
 
         // Sets the image to the imageview from our itemHolder class
         m_view.let { Glide.with(it.context).load(MealListItem?.strMealThumb).into(holder.mealThumbnail) }
-        holder.mealName.text = MealListItem?.strMeal?.subSequence(0, Math.min(MealListItem.strMeal.length, 30))
+        holder.mealName.text = MealListItem?.strMeal?.subSequence(0, Math.min(MealListItem.strMeal.length, 45))
         holder.mealCategory.text = MealListItem?.strCategory
 
-        holder.mealDetailButton.setOnClickListener {
+        holder.mealDetailCard.setOnClickListener {
             mealClickListener.OnMealClick(MealListItem!!)
         }
     }
@@ -43,6 +44,6 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
         val mealThumbnail: ImageView = itemView.findViewById(R.id.meal_list_item_thumbnail)
         val mealName: TextView = itemView.findViewById(R.id.meal_list_item_name)
         val mealCategory: TextView = itemView.findViewById(R.id.meal_list_item_category)
-        val mealDetailButton: TextView = itemView.findViewById(R.id.meal_list_item_button_details)
+        val mealDetailCard: CardView = itemView.findViewById(R.id.meal_list_item)
     }
 }
