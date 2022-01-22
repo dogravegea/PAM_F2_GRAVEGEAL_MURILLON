@@ -11,15 +11,19 @@ import com.bumptech.glide.Glide
 import com.dricolas.perfectmeal.rest.MealListItem
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonObject
 
 class MealDetailsFragment : Fragment() {
 
     private lateinit var m_view : View
     private lateinit var m_meal : MealListItem
+    private lateinit var json : JsonElement
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        m_meal = Json.decodeFromString<MealListItem>(arguments?.getString("selected_meal")!!)
+        json = Json.parseToJsonElement(arguments?.getString("selected_meal")!!)
+        m_meal = Json.decodeFromString(arguments?.getString("selected_meal")!!)
     }
 
     override fun onCreateView(
@@ -32,10 +36,25 @@ class MealDetailsFragment : Fragment() {
         val image : ImageView = m_view.findViewById(R.id.meal_details_thumbnail)
         val name : TextView = m_view.findViewById(R.id.meal_details_name)
         val category : TextView = m_view.findViewById(R.id.meal_details_category)
+        val ingredients : TextView = m_view.findViewById(R.id.meal_details_ingredients)
+        val instructions : TextView = m_view.findViewById(R.id.meal_details_instructions)
+
+        var i = 1
+        var ingredient = json.jsonObject["strIngredient$i"].toString()
+        var ingredient_measure = json.jsonObject["strMeasure$i"].toString()
+        var ingredient_list = ""
+        while(ingredient != "\"\"") {
+            ingredient_list += "• " + ingredient.subSequence(1, ingredient.length - 2) + " - " + ingredient_measure.subSequence(1, ingredient_measure.length - 2)+ "\n"
+            i++
+            ingredient = json.jsonObject["strIngredient$i"].toString()
+            ingredient_measure = json.jsonObject["strMeasure$i"].toString()
+        }
 
         m_view.let { Glide.with(it.context).load(m_meal.strMealThumb).into(image) }
         name.text = m_meal.strMeal
         category.text = m_meal.strCategory
+        ingredients.text = ingredient_list
+        instructions.text = m_meal.strInstructions
 
         return m_view
     }
