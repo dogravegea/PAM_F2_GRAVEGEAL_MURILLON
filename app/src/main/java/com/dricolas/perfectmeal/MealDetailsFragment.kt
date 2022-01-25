@@ -39,15 +39,10 @@ class MealDetailsFragment : Fragment() {
         val ingredients : TextView = m_view.findViewById(R.id.meal_details_ingredients)
         val instructions : TextView = m_view.findViewById(R.id.meal_details_instructions)
 
-        var i = 1
-        var ingredient = json.jsonObject["strIngredient$i"].toString()
-        var ingredient_measure = json.jsonObject["strMeasure$i"].toString()
         var ingredient_list = ""
-        while(ingredient != "\"\"") {
-            ingredient_list += "• " + ingredient.subSequence(1, ingredient.length - 2) + " - " + ingredient_measure.subSequence(1, ingredient_measure.length - 2)+ "\n"
-            i++
-            ingredient = json.jsonObject["strIngredient$i"].toString()
-            ingredient_measure = json.jsonObject["strMeasure$i"].toString()
+        for(ingredient in m_meal.ingredients)
+        {
+            ingredient_list += "• " + ingredient.name + " - " + ingredient.quantity + "\n"
         }
 
         m_view.let { Glide.with(it.context).load(m_meal.strMealThumb).into(image) }
