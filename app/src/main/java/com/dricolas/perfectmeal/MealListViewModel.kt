@@ -25,7 +25,7 @@ class MealListViewModel : ViewModel() {
 
     private fun loadMeals(value : ArrayList<MealListItem>? ) {
         // Do an asynchronous operation to fetch meals.
-        for(i in 1..1) {
+        for(i in 1..10) {
             viewModelScope.launch() {
                 var lst = value
 

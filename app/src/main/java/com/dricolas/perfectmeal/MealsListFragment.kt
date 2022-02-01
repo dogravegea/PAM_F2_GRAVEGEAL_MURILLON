@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -47,11 +48,26 @@ class MealsListFragment : Fragment() {
 
         val recyclerview = m_view.findViewById<RecyclerView>(R.id.fragment_meal_list_recycler_view)
 
+        val searchBar = m_view.findViewById<SearchView>(R.id.fragment_meal_list_search_view)
+
         // Setting the Adapter with the recyclerview
         recyclerview?.adapter = m_adapter
 
         // this creates a vertical layout Manager
         recyclerview?.layoutManager = LinearLayoutManager(view?.context)
+
+        // searching in the list
+        searchBar?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                m_adapter.filter.filter(newText)
+                return false
+            }
+
+        })
 
         return m_view
     }
