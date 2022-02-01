@@ -1,10 +1,16 @@
 package com.dricolas.perfectmeal
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.SearchView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -34,24 +40,50 @@ class MealsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         m_view = inflater.inflate(R.layout.fragment_meals_list, container, false)
 
-        m_adapter = RecyclerViewMealListAdapter(m_model.getMeals()) { meal ->
+        val recyclerview = m_view.findViewById<RecyclerView>(R.id.fragment_meal_list_recycler_view)
+        val searchBar = m_view.findViewById<SearchView>(R.id.fragment_meal_list_search_view)
+        val progressBar = m_view.findViewById<ProgressBar>(R.id.fragment_meal_list_progressBar)
+        val errorContainer = m_view.findViewById<ConstraintLayout>(R.id.fragment_meal_list_error_container)
+        val retryButton = m_view.findViewById<Button>(R.id.fragment_meal_list_btnRetry)
+
+        // Check for internet
+        retryButton.setOnClickListener {
+            loadData(progressBar, errorContainer)
+        }
+        if(m_model.getMeals() == null) {
+            loadData(progressBar, errorContainer)
+        }
+
+        m_adapter = RecyclerViewMealListAdapter(m_model.getMeals()!!) { meal ->
             navigateToMealDetails(meal)
         }
 
-        m_model.getMeals().observe(viewLifecycleOwner, { meals ->
-            m_adapter.notifyDataSetChanged()
-        })
+        m_model.getMeals()!!.observe(viewLifecycleOwner, { meals ->
+            m_adapter.CustomNotifyDataSetChanged()
 
-        val recyclerview = m_view.findViewById<RecyclerView>(R.id.fragment_meal_list_recycler_view)
+            if(meals.size != 0)
+                progressBar.visibility = View.GONE
+        })
 
         // Setting the Adapter with the recyclerview
         recyclerview?.adapter = m_adapter
 
         // this creates a vertical layout Manager
         recyclerview?.layoutManager = LinearLayoutManager(view?.context)
+
+        // searching in the list
+        searchBar?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                m_adapter.filter.filter(newText)
+                return false
+            }
+        })
 
         return m_view
     }
@@ -61,5 +93,19 @@ class MealsListFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString("selected_meal", Json.encodeToString(meal))
         findNavController().navigate(R.id.action_mealsListFragment_to_mealDetailsFragment, bundle)
+    }
+
+    fun loadData(progressBar : ProgressBar, ErrorContainer: ConstraintLayout)
+    {
+        if(m_model.init(m_view.context))
+        {
+            progressBar.visibility = View.VISIBLE
+            ErrorContainer.visibility = View.GONE
+        }
+        else
+        {
+            progressBar.visibility = View.GONE
+            ErrorContainer.visibility = View.VISIBLE
+        }
     }
 }
