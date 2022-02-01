@@ -1,7 +1,9 @@
 package com.dricolas.perfectmeal.rest
 
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
+import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*

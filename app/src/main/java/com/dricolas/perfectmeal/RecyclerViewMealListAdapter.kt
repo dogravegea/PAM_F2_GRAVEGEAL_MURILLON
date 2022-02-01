@@ -22,7 +22,16 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
     private var mealsFilterList = ArrayList<MealListItem>()
 
     init {
+        majFilterList()
+    }
+
+    fun majFilterList(){
         mealsFilterList = meals.value!!
+    }
+
+    fun CustomNotifyDataSetChanged(){
+        majFilterList()
+        this.notifyDataSetChanged()
     }
 
     // create new views
@@ -37,12 +46,12 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
         val MealListItem = mealsFilterList[position]
 
         // Sets the image to the imageview from our itemHolder class
-        m_view.let { Glide.with(it.context).load(MealListItem?.strMealThumb).into(holder.mealThumbnail) }
-        holder.mealName.text = MealListItem?.strMeal?.subSequence(0, Math.min(MealListItem.strMeal.length, 45))
-        holder.mealCategory.text = MealListItem?.strCategory
+        m_view.let { Glide.with(it.context).load(MealListItem.strMealThumb).into(holder.mealThumbnail) }
+        holder.mealName.text = MealListItem.strMeal?.subSequence(0, Math.min(MealListItem.strMeal.length, 45))
+        holder.mealCategory.text = MealListItem.strCategory
 
         holder.mealDetailCard.setOnClickListener {
-            mealClickListener.OnMealClick(MealListItem!!)
+            mealClickListener.OnMealClick(MealListItem)
         }
     }
 
@@ -72,12 +81,11 @@ class RecyclerViewMealListAdapter(var meals : LiveData<ArrayList<MealListItem>>,
                 mealsFilterList = results?.values as ArrayList<MealListItem>
                 notifyDataSetChanged()
             }
-
         }
     }
 
     override fun getItemCount(): Int {
-        return mealsFilterList.size!!
+        return mealsFilterList.size
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {

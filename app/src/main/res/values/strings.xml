@@ -7,4 +7,6 @@
     <string name="meal_ingredients">Ingredients</string>
     <string name="ingredient_list">TextView</string>
     <string name="meal_instructions">Instructions</string>
+    <string name="fragment_meal_list_btnRetry">Retry</string>
+    <string name="Fragment_meal_list_no_internet_connexion">No internet connexion</string>
 </resources>
