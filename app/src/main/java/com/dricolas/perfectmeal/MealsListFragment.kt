@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -38,17 +39,24 @@ class MealsListFragment : Fragment() {
 
         m_view = inflater.inflate(R.layout.fragment_meals_list, container, false)
 
+        val recyclerview = m_view.findViewById<RecyclerView>(R.id.fragment_meal_list_recycler_view)
+
+        val searchBar = m_view.findViewById<SearchView>(R.id.fragment_meal_list_search_view)
+
+        val progressBar = m_view.findViewById<ProgressBar>(R.id.fragment_meal_list_progressBar)
+
         m_adapter = RecyclerViewMealListAdapter(m_model.getMeals()) { meal ->
             navigateToMealDetails(meal)
         }
 
         m_model.getMeals().observe(viewLifecycleOwner, { meals ->
             m_adapter.notifyDataSetChanged()
+
+            if(meals.size == 0)
+                progressBar.visibility = View.VISIBLE
+            else
+                progressBar.visibility = View.GONE
         })
-
-        val recyclerview = m_view.findViewById<RecyclerView>(R.id.fragment_meal_list_recycler_view)
-
-        val searchBar = m_view.findViewById<SearchView>(R.id.fragment_meal_list_search_view)
 
         // Setting the Adapter with the recyclerview
         recyclerview?.adapter = m_adapter
@@ -66,7 +74,6 @@ class MealsListFragment : Fragment() {
                 m_adapter.filter.filter(newText)
                 return false
             }
-
         })
 
         return m_view
