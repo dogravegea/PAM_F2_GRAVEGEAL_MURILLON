@@ -40,7 +40,6 @@ class MealsListFragment : Fragment() {
 
         //*** Getting the fields
         val recyclerview = m_view.findViewById<RecyclerView>(R.id.fragment_meal_list_recycler_view)
-        val searchBar = m_view.findViewById<SearchView>(R.id.fragment_meal_list_search_view)
         val progressBar = m_view.findViewById<ProgressBar>(R.id.fragment_meal_list_progressBar)
         val errorContainer = m_view.findViewById<ConstraintLayout>(R.id.fragment_meal_list_error_container)
         val retryButton = m_view.findViewById<Button>(R.id.fragment_meal_list_btnRetry)
@@ -72,18 +71,6 @@ class MealsListFragment : Fragment() {
 
         //*** This creates a vertical layout Manager
         recyclerview?.layoutManager = LinearLayoutManager(view?.context)
-
-        //*** Searching in the list
-        searchBar?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                m_adapter.filter.filter(newText)
-                return false
-            }
-        })
 
         return m_view
     }
