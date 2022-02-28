@@ -11,23 +11,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dricolas.perfectmeal.rest.MealAPI
 import com.dricolas.perfectmeal.rest.MealListItem
-import io.ktor.client.features.websocket.*
-import io.ktor.http.*
 import kotlinx.coroutines.launch
 
-
+//*** View model for the meal list
 class MealListViewModel() : ViewModel() {
 
+    //*** Access to the theMealDB API
     private var api = MealAPI()
 
+    //*** Persistent meal list
     private var mealsList : MutableLiveData<ArrayList<MealListItem>>? = null
 
+    //*** initialisation of the live data
     fun init(context : Context) : Boolean
     {
+        //*** Check for internet
         val internetOk = checkForInternet(context)
+
+        //*** Instanciate the livedata
         if(mealsList == null)
             mealsList = MutableLiveData<ArrayList<MealListItem>>()
 
+        //*** Asynchronous call to the API to retrieve data if the internet connexion is ok
         mealsList?.apply {
             value = ArrayList<MealListItem>()
             if(internetOk) {
@@ -37,13 +42,16 @@ class MealListViewModel() : ViewModel() {
         return internetOk
     }
 
+    //*** Getter for the meal list
     fun getMeals(): LiveData<ArrayList<MealListItem>>? {
         return mealsList
     }
 
+    //*** Load meals from the API
     private fun loadMeals(value : ArrayList<MealListItem>? ) {
-        // Do an asynchronous operation to fetch meals.
+        //*** We retrieve meals 10 by 10 for a better loading
         for(i in 1..10) {
+            // Do an asynchronous operation to fetch meals, we fetch 10 meals per call
             viewModelScope.launch() {
                 var lst = value
 
@@ -60,38 +68,39 @@ class MealListViewModel() : ViewModel() {
         }
     }
 
+    //*** Check the internet connexion
     private fun checkForInternet(context: Context): Boolean {
 
-        // register activity with the connectivity manager service
+        //*** register activity with the connectivity manager service
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        // if the android version is equal to M
-        // or greater we need to use the
-        // NetworkCapabilities to check what type of
-        // network has the internet connection
+        //*** if the android version is equal to M
+        //*** or greater we need to use the
+        //*** NetworkCapabilities to check what type of
+        //*** network has the internet connection
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            // Returns a Network object corresponding to
-            // the currently active default data network.
+            //*** Returns a Network object corresponding to
+            //*** the currently active default data network.
             val network = connectivityManager.activeNetwork ?: return false
 
-            // Representation of the capabilities of an active network.
+            //** Representation of the capabilities of an active network.
             val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
 
             return when {
-                // Indicates this network uses a Wi-Fi transport,
-                // or WiFi has network connectivity
+                //*** Indicates this network uses a Wi-Fi transport,
+                //*** or WiFi has network connectivity
                 activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
 
-                // Indicates this network uses a Cellular transport. or
-                // Cellular has network connectivity
+                //*** Indicates this network uses a Cellular transport. or
+                //*** Cellular has network connectivity
                 activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
 
-                // else return false
+                //*** else return false
                 else -> false
             }
         } else {
-            // if the android version is below M
+            //*** if the android version is below M
             @Suppress("DEPRECATION") val networkInfo =
                 connectivityManager.activeNetworkInfo ?: return false
             @Suppress("DEPRECATION")
