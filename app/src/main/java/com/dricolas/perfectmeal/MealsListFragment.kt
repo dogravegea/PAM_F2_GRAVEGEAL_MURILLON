@@ -81,6 +81,7 @@ class MealsListFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 m_adapter.filter.filter(newText)
+                recyclerview!!.layoutManager?.scrollToPosition(0)
                 return false
             }
         })
