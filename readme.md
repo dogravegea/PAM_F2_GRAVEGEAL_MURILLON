@@ -24,7 +24,7 @@ Cette API permet de récupérer des informations sur des recettes de cuisine. On
 
 Au lancement de l'application, cette dernière effectue une requête à l'API pour récupérer la liste des recettes. Dans l'éventualité où l'utilisateur n'a pas accès à internet, un message d'erreur s'affiche pour prévenir qu'une erreur a eu lieu et un bouton s'affiche. L'appui sur ce dernier permet de retenter d'appeler l'API.
 
-Une fois que les données ont été récupérées, on les affiches sous forme de carte dans une liste. Chaque carte présente l'image correspondant au plat que la recette permet de cuisiner, le nom du plat ainsi, ainsi que le type de la recette. Il est possible de filtrer les éléments de cette liste grâce à une barre de recherche (recherche sur le nom ou sur le type de la recette) 
+Une fois que les données ont été récupérées, on les affiche sous forme de carte dans une liste. Chaque carte présente l'image correspondant au plat que la recette permet de cuisiner, le nom du plat ainsi, ainsi que le type de la recette. Il est possible de filtrer les éléments de cette liste grâce à une barre de recherche (recherche sur le nom ou sur le type de la recette) 
 
 Un clic sur une carte amène sur le détail de la recette. On retrouve alors les éléments suivants :
 
